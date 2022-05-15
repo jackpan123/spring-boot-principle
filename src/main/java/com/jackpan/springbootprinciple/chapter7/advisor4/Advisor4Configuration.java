@@ -2,6 +2,7 @@ package com.jackpan.springbootprinciple.chapter7.advisor4;
 
 import com.sun.tools.javac.util.List;
 import org.springframework.aop.framework.ProxyFactoryBean;
+import org.springframework.aop.support.ControlFlowPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.RegexpMethodPointcutAdvisor;
 import org.springframework.context.annotation.Bean;
@@ -97,6 +98,30 @@ public class Advisor4Configuration {
     public ProxyFactoryBean waiter2() {
         ProxyFactoryBean factory = new ProxyFactoryBean();
         factory.setInterceptorNames("dynamicAdvisor");
+        factory.setProxyTargetClass(true);
+        factory.setTarget(waiterTarget());
+        return factory;
+    }
+
+    // 流程切点
+    @Bean
+    public ControlFlowPointcut controlFlowPointcut() {
+        return new ControlFlowPointcut(WaiterDelegate.class, "service");
+    }
+
+    @Bean
+    public DefaultPointcutAdvisor controlFlowAdvisor() {
+        DefaultPointcutAdvisor controlFlowAdvisor = new DefaultPointcutAdvisor();
+        controlFlowAdvisor.setPointcut(controlFlowPointcut());
+        controlFlowAdvisor.setAdvice(greetingAdvice());
+
+        return  controlFlowAdvisor;
+    }
+
+    @Bean
+    public ProxyFactoryBean waiter3() {
+        ProxyFactoryBean factory = new ProxyFactoryBean();
+        factory.setInterceptorNames("controlFlowAdvisor");
         factory.setProxyTargetClass(true);
         factory.setTarget(waiterTarget());
         return factory;

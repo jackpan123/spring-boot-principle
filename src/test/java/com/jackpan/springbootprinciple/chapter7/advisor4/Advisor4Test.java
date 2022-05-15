@@ -46,4 +46,22 @@ public class Advisor4Test {
         waiter2.serveTo("John");
         seller.greetTo("John");
     }
+
+
+    @Test
+    public void controlFlowAdvisorTest() {
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(Advisor4Configuration.class);
+        Waiter waiter3 = (Waiter) ctx.getBean("waiter3");
+        WaiterDelegate wd = new WaiterDelegate();
+        wd.setWaiter(waiter3);
+        waiter3.greetTo("Peter");
+        waiter3.serveTo("Peter");
+
+        wd.service("Peter");
+
+        WaiterDelegate wd2 = new WaiterDelegate();
+        wd2.setWaiter(waiter3);
+
+        wd.service("Peter111");
+    }
 }
