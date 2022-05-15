@@ -127,5 +127,29 @@ public class Advisor4Configuration {
         return factory;
     }
 
+    // 复合切点
+    @Bean
+    public GreetingComposablePointcut gcp() {
+        return new GreetingComposablePointcut();
+    }
+
+    @Bean
+    public DefaultPointcutAdvisor composableAdvisor() {
+        DefaultPointcutAdvisor composableAdvisor = new DefaultPointcutAdvisor();
+        composableAdvisor.setPointcut(gcp().getIntersectionPointcut());
+        composableAdvisor.setAdvice(greetingAdvice());
+
+        return composableAdvisor;
+    }
+
+    @Bean
+    public ProxyFactoryBean waiter4() {
+        ProxyFactoryBean factory = new ProxyFactoryBean();
+        factory.setInterceptorNames("composableAdvisor");
+        factory.setProxyTargetClass(true);
+        factory.setTarget(waiterTarget());
+        return factory;
+    }
+
 
 }

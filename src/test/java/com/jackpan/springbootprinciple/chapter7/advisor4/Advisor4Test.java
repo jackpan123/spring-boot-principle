@@ -64,4 +64,17 @@ public class Advisor4Test {
 
         wd.service("Peter111");
     }
+
+    @Test
+    public void composableAdvisorTest() {
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(Advisor4Configuration.class);
+        Waiter waiter4 = (Waiter) ctx.getBean("waiter4");
+        WaiterDelegate wd = new WaiterDelegate();
+        wd.setWaiter(waiter4);
+        waiter4.greetTo("Peter");
+        waiter4.serveTo("Peter");
+
+        wd.service("Peter");
+
+    }
 }
