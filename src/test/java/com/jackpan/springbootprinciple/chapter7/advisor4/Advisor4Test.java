@@ -57,12 +57,12 @@ public class Advisor4Test {
         waiter3.greetTo("Peter");
         waiter3.serveTo("Peter");
 
-        wd.service("Peter");
+        wd.serviceClient("Peter");
 
         WaiterDelegate wd2 = new WaiterDelegate();
         wd2.setWaiter(waiter3);
 
-        wd.service("Peter111");
+        wd.serviceClient("Peter111");
     }
 
     @Test
@@ -74,7 +74,7 @@ public class Advisor4Test {
         waiter4.greetTo("Peter");
         waiter4.serveTo("Peter");
 
-        wd.service("Peter");
+        wd.serviceClient("Peter");
 
     }
 }
